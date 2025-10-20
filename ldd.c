@@ -7,7 +7,20 @@ MODULE_AUTHOR("James");
 MODULE_DESCRIPTION("First loadable kernel");
 
 static struct proc_dir_entry *custom_proc_node;
-struct proc_ops driver_proc_ops = {};
+
+static ssize_t my_read(struct file * file_pointer,
+		char * user_space_buffer,
+		size_t count,
+		loff_t * offset){
+	printk("my_read\n");
+	return 0;
+}
+
+struct proc_ops driver_proc_ops = {
+	.proc_read = my_read
+};
+
+
 
 static int my_module_init(void) {
 	printk("my_module_init: entry\n");
