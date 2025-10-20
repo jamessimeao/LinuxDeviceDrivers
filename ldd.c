@@ -13,7 +13,19 @@ static ssize_t my_read(struct file * file_pointer,
 		size_t count,
 		loff_t * offset){
 	printk("my_read\n");
-	return 0;
+	
+	char msg[] = "Ack!\n";
+	size_t len = strlen(msg);
+	
+	if(*offset >= len){
+		return 0;
+	}
+	
+	int result;
+	result = copy_to_user(user_space_buffer, msg, len);
+	*offset += len;
+
+	return len;
 }
 
 struct proc_ops driver_proc_ops = {
